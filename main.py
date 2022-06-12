@@ -1,14 +1,16 @@
 from tkinter import *
 import random
 
-# from tkinter import messagebox
+from tkinter import messagebox
 
 answers = [
     "магазин",  # индекс 0
     "пальма",  # индекс 1
     "море",  # индекс 2
     "крабы",  # индекс 3
-    "корабль"  # индекс 4
+    "корабль",  # индекс 4
+    "эскимо",  # индекс 5
+    "эскимос"  # индекс 6
 ]
 
 words = []  # создаем пустой список
@@ -34,13 +36,14 @@ for word in answers:  # цикл фор перебирает элементы с
 
     words.append(broken_word)  # добавляем эту строку в список words
 
-random_num = random.randint(0, len(words))  # генерирует случайное число,
+random_num = random.randint(0, len(words) - 1)  # генерирует случайное число,
 
 
 # по которому мы будем обращаться к списку слов
 
 
 def show_broken_word():
+    # global words, answers, random_num
     broken_word_label['text'] = words[random_num]
 
 
@@ -49,9 +52,18 @@ def checking_word():
     user_answer = user_answer_entry.get()
     print("Твой ответ", user_answer)
     if user_answer == answers[random_num]:
-        print("Ты отгадал слово")
+        messagebox.showinfo(message="Ты отгадал слово")
+        reset()
     else:
-        print("Ты не отгадал")
+        messagebox.showerror(message='Ты не отгадал =(')
+        user_answer_entry.delete(0, END)
+
+
+def reset():
+    global random_num
+    random_num = random.randint(0, len(words) - 1)
+    broken_word_label['text'] = words[random_num]
+    user_answer_entry.delete(0, END)
 
 
 # print(num)
@@ -61,14 +73,14 @@ print('список words', words)
 root = Tk()  # создаем главное окно
 root.geometry("350x400+400+300")
 root.title("❤ Почини слово:с ❤")
-root.configure(background="#000000")
+root.configure(background="pink")
 
 broken_word_label = Label(
     root,
     text="",
     font=("Verdana", 18),
-    bg="#000000",
-    fg="#FFFFFF",
+    bg="pink",
+    fg="black",
 )
 
 broken_word_label.pack(pady=30, ipady=10, ipadx=10)
@@ -102,7 +114,7 @@ btnreset = Button(
     bg="#4c4b4b",
     fg="#EA425C",
     relief=GROOVE,
-
+    command=reset
 )
 btnreset.pack()
 
